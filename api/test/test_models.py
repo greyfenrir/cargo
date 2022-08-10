@@ -19,6 +19,6 @@ class ShipmentTest(TestCase):
         self.assertEqual(1, len(admin_shipments))
         self.assertEqual(2, len(user_shipments))
         self.assertTrue(admin_shipments[0].created)     # not empty
-        self.assertTrue('Receiving', admin_shipments[0].state)  # default value
+        self.assertEqual(Shipment.STATES[0][0], admin_shipments[0].state)  # default state
 
 
