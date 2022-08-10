@@ -5,8 +5,8 @@ from django.test import TestCase
 from ..models import Shipment
 
 
-class ShipmentTest(TestCase):
-    def test_empty(self):
+class ModelTest(TestCase):
+    def test_all(self):
         owner_a = User(username='admin')
         owner_u = User(username='user')
         owner_a.save()
@@ -20,5 +20,3 @@ class ShipmentTest(TestCase):
         self.assertEqual(2, len(user_shipments))
         self.assertTrue(admin_shipments[0].created)     # not empty
         self.assertEqual(Shipment.STATES[0][0], admin_shipments[0].state)  # default state
-
-
