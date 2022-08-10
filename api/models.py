@@ -5,12 +5,17 @@ from django.db import models
 
 
 class Shipment(models.Model):
+    STATES = (
+        ('R', 'Receiving'),
+        ('P', 'Processing'),
+        ('F', 'Fulfilling')
+
+    )
     created = models.DateTimeField(auto_now_add=True)
     from_addr = models.TextField(default='')
     to_addr = models.TextField(default='')
 
-    # Receiving, Processing, Fulfilling
-    state = models.TextField(default='Receiving')   # todo: convert to ChoiceField
+    state = models.CharField(max_length=1, choices=STATES, default=STATES[0][0])
 
     owner = models.ForeignKey('auth.User', related_name='shipments', on_delete=models.CASCADE)
 
