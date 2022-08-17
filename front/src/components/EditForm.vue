@@ -1,31 +1,28 @@
-<template>
+<!-- <template>
   <div>
     <p>From: {{ shipment.from_addr }}</p>
     <p>To: {{ shipment.to_addr }}</p>
     <p>State: {{ state }}</p> 
+    
+  </div>
+</template> -->
+<template>
+  <form>
     <p>
-        <button class="save" v-on:click="$emit('edit-save', shipment.id)">Save</button>
+        <label>From: </label><input type="text" v-model="from"/>
+        <label>To: </label><input type="text" v-model="to"/>
+        <label>State: </label><input type="text" v-model="state"/>
+    </p>
+    <p>
+        <button class="save" v-on:click="$emit('edit-save', id, from, to, state)">Save</button>
         <button class="cancel" v-on:click="$emit('edit-cancel')">Cancel</button>
     </p>
-  </div>
+  </form>
 </template>
 
 <script>
 export default {
-    computed: {
-        state() {
-            if (this.shipment.state === 'R') {
-                return 'Received'
-            }
-            if (this.shipment.state === 'P') {
-                return 'Processing'
-            }
-            if (this.shipment.state === 'F') {
-                return 'Fulfilling'
-            }
-        }
-    },
     props:
-        ["shipment"]
+        ["id", "from", "to", "state"]
 }
 </script>

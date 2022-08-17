@@ -2,7 +2,10 @@
   <div class="home">
     <EditForm 
         v-if="editMode"
-        v-bind:shipment="shipment"
+        v-bind:id="shipment.id"
+        v-bind:from="shipment.from_addr"
+        v-bind:to="shipment.to_addr"
+        v-bind:state="shipment.state"
         v-on:edit-save="editSave"
         v-on:edit-cancel="editCancel"
     />
@@ -38,12 +41,15 @@ export default {
             this.shipment = this.shipments.filter(t => t.id === id)[0]
             this.switchEditMode()
         },
-        editSave(id) {
-            console.log("save: " + id)
+        editSave(id, from, to, state) {
+            // some checks here...
+            console.log("from: " + from + " to: " + to + " state: " + state)
+            this.shipment.from_addr = from
+            this.shipment.to_addr = to
+            this.shipment.state = state 
             this.switchEditMode()
         },
         editCancel() {
-            console.log("cancel")
             this.switchEditMode()
         },
         switchEditMode() {
