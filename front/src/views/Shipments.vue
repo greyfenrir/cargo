@@ -13,6 +13,8 @@
         v-if="!editMode"
         v-bind:shipments="shipments"
         @edit-shipment="editShipment"
+        @delete-shipment="deleteShipment"
+        @add-shipment="addShipment"
     />
   </div>
 </template>
@@ -24,7 +26,8 @@ export default {
     data() {
         return {
             shipments: [],
-            editMode: false
+            editMode: false,
+            newShipment: false
         }
     },
     components: {
@@ -37,19 +40,38 @@ export default {
             .then(json => {this.shipments = json})
     },
     methods: {
+        addShipment(){
+            const shipment = {
+                id: Date.now(),
+                created: Date.now(),
+                from_addr: "",
+                to_addr: "",
+                //owner: ""
+            }
+            this.newShipment = true
+            this.shipments.push(shipment)
+            this.editShipment(shipment.id)
+        },
         editShipment(id) {
-            this.shipment = this.shipments.filter(t => t.id === id)[0]
+            this.shipment = this.shipments.filter(s => s.id === id)[0]
             this.switchEditMode()
+        },
+        deleteShipment(id) {
+            this.shipments = this.shipments.filter(s => s.id != id)
         },
         editSave(id, from, to, state) {
             // some checks here...
-            console.log("from: " + from + " to: " + to + " state: " + state)
             this.shipment.from_addr = from
             this.shipment.to_addr = to
             this.shipment.state = state
+            this.newShipment = false
             this.switchEditMode()
         },
-        editCancel() {
+        editCancel(id) {
+            // handle new flag
+            if (this.newShipment) {
+                this.deleteShipment(id)
+            }
             this.switchEditMode()
         },
         switchEditMode() {

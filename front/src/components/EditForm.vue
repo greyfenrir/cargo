@@ -1,11 +1,3 @@
-<!-- <template>
-  <div>
-    <p>From: {{ shipment.from_addr }}</p>
-    <p>To: {{ shipment.to_addr }}</p>
-    <p>State: {{ state }}</p> 
-    
-  </div>
-</template> -->
 <template>
   <form>
     <p>
@@ -23,7 +15,7 @@
     </p>
     <p>
         <button class="save" v-on:click="$emit('edit-save', id, from, to, state)">Save</button>
-        <button class="cancel" v-on:click="$emit('edit-cancel')">Cancel</button>
+        <button class="cancel" v-on:click="$emit('edit-cancel', id)">Cancel</button>
     </p>
   </form>
 </template>
