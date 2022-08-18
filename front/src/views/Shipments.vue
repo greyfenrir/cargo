@@ -46,7 +46,7 @@ export default {
                 created: Date.now(),
                 from_addr: "",
                 to_addr: "",
-                //owner: ""
+                owner: "admin"
             }
             this.newShipment = true
             this.shipments.push(shipment)

@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 
 from . import serializers
+from ..cargo.settings import RESTRICTED
 from .permissions import IsOwnerOrReadOnly
 from .models import Shipment
 
@@ -21,7 +22,8 @@ class UserDetail(generics.RetrieveAPIView):
 class ShipmentList(generics.ListCreateAPIView):
     queryset = Shipment.objects.all()
     serializer_class = serializers.ShipmentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    if RESTRICTED:
+        permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -30,4 +32,5 @@ class ShipmentList(generics.ListCreateAPIView):
 class ShipmentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Shipment.objects.all()
     serializer_class = serializers.ShipmentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    if RESTRICTED:
+        permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
