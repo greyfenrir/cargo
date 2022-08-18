@@ -20,6 +20,7 @@
 </template>
 
 <script>
+const DRF_URI = 'http://127.0.0.1:8000/shipments/';
 import ShipmentList from '@/components/ShipmentList';
 import EditForm from '@/components/EditForm.vue';
 export default {
@@ -35,10 +36,11 @@ export default {
     EditForm
 },
     mounted() {
-        fetch ('http://127.0.0.1:8000/shipments/')
+        fetch (DRF_URI)
             .then(response => response.json())
             .then(json => {this.shipments = json})
     },
+    
     methods: {
         addShipment(){
             const shipment = {
@@ -58,6 +60,10 @@ export default {
         },
         deleteShipment(id) {
             this.shipments = this.shipments.filter(s => s.id != id)
+            const response = fetch(DRF_URI + id, {
+                method: 'DELETE'
+            })
+            console.log(response)
         },
         editSave(id, from, to, state) {
             // some checks here...
@@ -65,6 +71,7 @@ export default {
             this.shipment.to_addr = to
             this.shipment.state = state
             this.newShipment = false
+            // todo: send to backend
             this.switchEditMode()
         },
         editCancel(id) {
