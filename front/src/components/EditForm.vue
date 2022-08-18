@@ -11,7 +11,15 @@
     <p>
         <label>From: </label><input type="text" v-model="from"/>
         <label>To: </label><input type="text" v-model="to"/>
-        <label>State: </label><input type="text" v-model="state"/>
+        <p>
+          <label>State: </label>
+          <select v-model="state">
+            <option>Receiving</option>
+            <option>Processing</option>
+            <option>Fulfilling</option>
+            <option>Done</option>
+          </select>
+        </p>
     </p>
     <p>
         <button class="save" v-on:click="$emit('edit-save', id, from, to, state)">Save</button>

@@ -46,7 +46,7 @@ export default {
             console.log("from: " + from + " to: " + to + " state: " + state)
             this.shipment.from_addr = from
             this.shipment.to_addr = to
-            this.shipment.state = state 
+            this.shipment.state = state
             this.switchEditMode()
         },
         editCancel() {
