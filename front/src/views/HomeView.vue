@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Cargo logo" src="../assets/logo.png">
     <Hello msg="Welcome to Cargo App"/>
+    <button @click="toLogin">Login</button>
   </div>
 </template>
 
@@ -13,6 +14,11 @@ export default {
   name: 'HomeView',
   components: {
     Hello
+  },
+  methods: {
+    toLogin() {
+      this.$router.push({name: 'login'})
+    }
   }
 }
 </script>

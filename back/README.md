@@ -11,6 +11,7 @@ cd cargo/back
 pip install -r requirements.txt
 
 # update db
+python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 
