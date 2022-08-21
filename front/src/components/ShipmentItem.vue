@@ -16,11 +16,6 @@
 export default {
     computed: {
     },
-    props: {
-        shipment: {
-            type: Object,
-            required: true
-        },
-    }
+    props: ["shipment"]
 }
 </script>

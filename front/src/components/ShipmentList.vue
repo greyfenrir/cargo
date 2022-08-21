@@ -4,6 +4,7 @@
         <ShipmentItem
             v-for="shipment of shipments"
             v-bind:shipment="shipment"
+            :key="shipment.id"
             v-on:edit-shipment="editShipment"
             v-on:delete-shipment="deleteShipment"
         />
