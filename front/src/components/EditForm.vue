@@ -1,12 +1,12 @@
 <template>
   <form>
     <p>
-      <label>From: </label><input type="text" v-model="from"/>
-      <label>To: </label><input type="text" v-model="to"/>
+      <label>From: </label><input type="text" v-model="shipment.from_addr"/>
+      <label>To: </label><input type="text" v-model="shipment.to_addr"/>
     </p>
     <p>
       <label>State: </label>
-      <select v-model="state">
+      <select v-model="shipment.state">
         <option>Receiving</option>
         <option>Processing</option>
         <option>Fulfilling</option>
@@ -14,8 +14,8 @@
       </select>
     </p>
     <p>
-      <button class="save" v-on:click="$emit('edit-save', id, from, to, state)">Save</button>
-      <button class="cancel" v-on:click="$emit('edit-cancel', id)">Cancel</button>
+      <button class="save" v-on:click="$emit('edit-save', shipment)">Save</button>
+      <button class="cancel" v-on:click="$emit('edit-cancel', shipment)">Cancel</button>
     </p>
   </form>
 </template>
@@ -23,6 +23,6 @@
 <script>
 export default {
     props:
-        ["id", "from", "to", "state"]
+        ["shipment"]
 }
 </script>

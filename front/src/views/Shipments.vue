@@ -2,7 +2,7 @@
   <div class="home">
     <EditForm 
         v-if="editMode"
-        v-bind:id="shipment.id"
+        v-bind:shipment="shipment"
         v-bind:from="shipment.from_addr"
         v-bind:to="shipment.to_addr"
         v-bind:state="shipment.state"
@@ -28,6 +28,7 @@ export default {
     data() {
         return {
             shipments: [],
+            shipment: {},
             editMode: false,
             newShipment: false
         }
@@ -59,51 +60,74 @@ export default {
         },
         addShipment(){
             const shipment = {
-                id: Date.now(),
-                created: Date.now(),
-                from_addr: "",
-                to_addr: "",
-                owner: "admin"
+                id: '',
+                created: '',
+                from_addr: '',
+                to_addr: '',
+                state: 'Receiving',
+                owner: ''
             }
-            this.shipments.push(shipment)
-            this.editShipment(shipment.id)
-            this.newShipment = true
+            this.newShipment = true            
+            this.editShipment(shipment)
         },
-        editShipment(id) {
-            this.shipment = this.shipments.filter(s => s.id === id)[0]
+        editShipment(shipment) {
+            this.shipment = shipment
             this.switchEditMode()
         },
-        deleteShipment(id) {
-            this.shipments = this.shipments.filter(s => s.id != id)
+        deleteShipment(shipment) {
+            this.shipments = this.shipments.filter(s => s.id != shipment.id)
             if (!this.newShipment) {
                 $.ajax({
-                    url: this.drfURI + 'shipments/' + id,
+                    url: this.drfURI + 'shipments/' + shipment.id  + '/',
                     type: 'DELETE',
                     headers: {
                         'Authorization': 'Token ' + sessionStorage.getItem('token')
-                    },
+                    }
                 })
             }
         },
-        editSave(id, from, to, state) {
-            // some validation here...
-            this.shipment.from_addr = from
-            this.shipment.to_addr = to
-            this.shipment.state = state
-            this.newShipment = false
-            token = sessionStorage.getItem('token')
+        editSave(shipment) {
+            // some validation here...            
             if (this.newShipment) {
-                // POST
+                $.ajax({
+                    url: this.drfURI + 'shipments/',
+                    type: 'POST',
+                    headers: {
+                        'Authorization': 'Token ' + sessionStorage.getItem('token')
+                    },
+                    data: {
+                        'from_addr': shipment.from_addr,
+                        'to_addr': shipment.to_addr,
+                        'state': shipment.state
+                    },
+                    success: (response) => {                    
+                        this.shipments.push(response)
+                    }                    
+                })                
             } else {
-                // PUT
+                $.ajax({
+                    url: this.drfURI + 'shipments/' + shipment.id  + '/',
+                    type: 'PUT',
+                    headers: {
+                        'Authorization': 'Token ' + sessionStorage.getItem('token')
+                    },
+                    data: {
+                        'from_addr': shipment.from_addr,
+                        'to_addr': shipment.to_addr,
+                        'state': shipment.state
+                    },
+                    success: (response) => {                    
+                        console.log('success: ' + response)
+                    },
+                    error: (response) => {
+                        console.log('error: ' + response)
+                    }
+                })
             }
             this.newShipment = false
             this.switchEditMode()
         },
         editCancel(id) {            
-            if (this.newShipment) {
-                this.deleteShipment(id)
-            }
             this.newShipment = false
             this.switchEditMode()
         },

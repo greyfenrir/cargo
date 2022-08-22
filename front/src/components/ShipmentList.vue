@@ -20,11 +20,11 @@ export default {
     props: ['shipments'],
     components: { ShipmentItem },
     methods: {
-        editShipment(id) {
-            this.$emit('edit-shipment', id)
+        editShipment(shipment) {
+            this.$emit('edit-shipment', shipment)
         },
-        deleteShipment(id) {
-            this.$emit('delete-shipment', id)
+        deleteShipment(shipment) {
+            this.$emit('delete-shipment', shipment)
         }
     }
 }
