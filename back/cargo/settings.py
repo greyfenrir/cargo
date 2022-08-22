@@ -132,5 +132,7 @@ CORS_ORIGIN_WHITELIST = ["http://localhost:8080"]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_authtoken.auth.AuthTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
     ),
 }
