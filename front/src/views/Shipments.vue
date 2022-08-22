@@ -16,11 +16,11 @@
         @delete-shipment="deleteShipment"
         @add-shipment="addShipment"
     />
+    <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
-const DRF_URI = 'http://127.0.0.1:8000/shipments/';
 import ShipmentList from '@/components/ShipmentList';
 import EditForm from '@/components/EditForm.vue';
 export default {
@@ -31,17 +31,24 @@ export default {
             newShipment: false
         }
     },
+
     components: {
-    ShipmentList,
-    EditForm
-},
+        ShipmentList,
+        EditForm
+    },
+
     mounted() {
-        fetch (DRF_URI)
+        fetch (this.drfURI + 'shipments/')
             .then(response => response.json())
             .then(json => {this.shipments = json})
     },
     
     methods: {
+        logout() {
+            sessionStorage.setItem('token', '')
+            this.$router.push({name: 'home'})
+
+        },
         addShipment(){
             const shipment = {
                 id: Date.now(),
@@ -50,35 +57,41 @@ export default {
                 to_addr: "",
                 owner: "admin"
             }
-            this.newShipment = true
             this.shipments.push(shipment)
             this.editShipment(shipment.id)
+            this.newShipment = true
         },
         editShipment(id) {
             this.shipment = this.shipments.filter(s => s.id === id)[0]
             this.switchEditMode()
         },
         deleteShipment(id) {
-            this.shipments = this.shipments.filter(s => s.id != id)
-            const response = fetch(DRF_URI + id, {
-                method: 'DELETE'
-            })
-            console.log(response)
+            this.shipments = this.shipments.filter(s => s.id != id)            
+            if (!this.newShipment) {
+                token = sessionStorage.getItem('token')
+                // DELETE
+            }
         },
         editSave(id, from, to, state) {
-            // some checks here...
+            // some validation here...
             this.shipment.from_addr = from
             this.shipment.to_addr = to
             this.shipment.state = state
+            this.newShipment = false        
+            token = sessionStorage.getItem('token')
+            if (this.newShipment) {
+                // POST                
+            } else {
+                // PUT
+            }
             this.newShipment = false
-            // todo: send to backend
             this.switchEditMode()
         },
-        editCancel(id) {
-            // handle new flag
+        editCancel(id) {            
             if (this.newShipment) {
                 this.deleteShipment(id)
             }
+            this.newShipment = false
             this.switchEditMode()
         },
         switchEditMode() {
