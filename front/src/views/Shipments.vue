@@ -23,6 +23,7 @@
 <script>
 import ShipmentList from '@/components/ShipmentList';
 import EditForm from '@/components/EditForm.vue';
+import $ from 'jquery'
 export default {
     data() {
         return {
@@ -45,6 +46,13 @@ export default {
     
     methods: {
         logout() {
+            $.ajax({
+                url: this.drfURI + 'auth/logout',
+                type: 'DELETE',
+                headers: {
+                    'Authorization': 'Token ' + sessionStorage.getItem('token')
+                },
+            })
             sessionStorage.setItem('token', '')
             this.$router.push({name: 'home'})
 
@@ -66,10 +74,15 @@ export default {
             this.switchEditMode()
         },
         deleteShipment(id) {
-            this.shipments = this.shipments.filter(s => s.id != id)            
+            this.shipments = this.shipments.filter(s => s.id != id)
             if (!this.newShipment) {
-                token = sessionStorage.getItem('token')
-                // DELETE
+                $.ajax({
+                    url: this.drfURI + 'shipments/' + id,
+                    type: 'DELETE',
+                    headers: {
+                        'Authorization': 'Token ' + sessionStorage.getItem('token')
+                    },
+                })
             }
         },
         editSave(id, from, to, state) {
@@ -77,10 +90,10 @@ export default {
             this.shipment.from_addr = from
             this.shipment.to_addr = to
             this.shipment.state = state
-            this.newShipment = false        
+            this.newShipment = false
             token = sessionStorage.getItem('token')
             if (this.newShipment) {
-                // POST                
+                // POST
             } else {
                 // PUT
             }

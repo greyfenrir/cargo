@@ -12,12 +12,12 @@
         <option>Fulfilling</option>
         <option>Done</option>
       </select>
-    </p>    
+    </p>
     <p>
       <button class="save" v-on:click="$emit('edit-save', id, from, to, state)">Save</button>
       <button class="cancel" v-on:click="$emit('edit-cancel', id)">Cancel</button>
     </p>
-  </form>  
+  </form>
 </template>
 
 <script>
