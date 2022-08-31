@@ -25,18 +25,15 @@ class APITest(APITestCase):
                 admin_shipments += len(record['shipments'])
             elif record['username'] == self.user.username:
                 user_shipments += len(record['shipments'])
-            else:
-                self.fail(f'Wrong owner found: {record["owner"]}')
 
         self.assertEqual(1, admin_shipments)
         self.assertEqual(2, user_shipments)
 
     def test_get_user_details(self):
-        admin_id = 1
-        url = reverse('user-details', args=[admin_id])
+        url = reverse('user-details', args=[self.admin.id])
         response = self.client.get(url, format='json')
         content = json.loads(response.content)
-        target_content = {'id': admin_id, 'username': 'admin', 'shipments': [2]}
+        target_content = {'id': self.admin.id, 'username': 'admin', 'shipments': [2]}
         self.assertEqual(content, target_content)
 
     def test_get_shipment_list(self):
@@ -50,8 +47,6 @@ class APITest(APITestCase):
                 admin_shipments += 1
             elif record['owner'] == self.user.username:
                 user_shipments += 1
-            else:
-                self.fail(f'Wrong owner found: {record["owner"]}')
 
         self.assertEqual(1, admin_shipments)
         self.assertEqual(2, user_shipments)
